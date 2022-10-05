@@ -426,24 +426,7 @@ void TaskHoleParameters::holeCutDepthChanged(double value)
 {
     PartDesign::Hole* pcHole = static_cast<PartDesign::Hole*>(vp->getObject());
 
-    if (ui->HoleCutCountersinkAngle->isEnabled()) {
-        // we have a countersink and recalculate the HoleCutDiameter
-
-        // store current depth
-        double DepthDifference = value - pcHole->HoleCutDepth.getValue();
-        // new diameter is the old one + 2*tan(angle/2)*DepthDifference
-        double newDiameter = pcHole->HoleCutDiameter.getValue()
-            + 2 * tan(Base::toRadians(pcHole->HoleCutCountersinkAngle.getValue() / 2)) * DepthDifference;
-        // only apply if the result is not smaller than the hole diameter
-        if (newDiameter > pcHole->Diameter.getValue()) {
-            pcHole->HoleCutDiameter.setValue(newDiameter);
-            pcHole->HoleCutDepth.setValue(value);
-        }
-    }
-    else {
-        pcHole->HoleCutDepth.setValue(value);
-    }
-
+    pcHole->HoleCutDepth.setValue(value);
     recomputeFeature();
 }
 
