@@ -771,6 +771,7 @@ void Hole::updateHoleCutParams()
                 else {
                     HoleCutDiameter.setValue(Diameter.getValue() + 0.1);
                 }
+                HoleCutDepth.setValue(0.0);
                 HoleCutCountersinkAngle.setValue(counter.angle);
             }
             if (HoleCutCountersinkAngle.getValue() == 0.0) {
@@ -827,6 +828,7 @@ void Hole::updateHoleCutParams()
                 if (dimen.thread == "None") {
                     // valid values for visual feedback
                     HoleCutDiameter.setValue(Diameter.getValue() + 0.1);
+                    HoleCutDepth.setValue(0.0);
                     // there might be an angle of zero (if no norm exists for the size)
                     if (HoleCutCountersinkAngle.getValue() == 0.0) {
                         HoleCutCountersinkAngle.setValue(counter.angle);
@@ -847,6 +849,7 @@ void Hole::updateHoleCutParams()
                     if (!HoleCutCustomValues.getValue()
                         || (HoleCutCustomValues.getValue() && HoleCutCustomValues.isReadOnly())) {
                         HoleCutDiameter.setValue(dimen.diameter);
+                        HoleCutDepth.setValue(0.0);
                         HoleCutDiameter.setReadOnly(true);
                         HoleCutDepth.setReadOnly(true);
                         HoleCutCountersinkAngle.setValue(counter.angle);
