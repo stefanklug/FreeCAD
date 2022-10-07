@@ -44,6 +44,8 @@
 # include <TopExp.hxx>
 #endif
 
+#include <boost/regex.hpp>
+
 #include <App/Application.h>
 #include <App/DocumentObject.h>
 #include <Base/Placement.h>
@@ -1598,6 +1600,22 @@ short Hole::mustExecute() const
 void Hole::Restore(Base::XMLReader& reader)
 {
     ProfileBased::Restore(reader);
+
+    std::string holeCutType = HoleCutType.getValueAsString();
+    if("Countersink" == holeCutType && HoleCutDepth.getValue() > 0.0) {
+        boost::regex rx("^([0-9]+)\\.([0-9]+).*");
+        boost::cmatch what;
+        if (boost::regex_match(reader.ProgramVersion.c_str(), what, rx)) {
+            int major = std::atoi(what[1].first);
+            int minor = std::atoi(what[2].first);
+            if(major == 0 && minor < 21) {
+                //in versions < 0.21 HoleCutDepth could be set, but it was ignored in geometry creation
+                HoleCutDepth.setValue(0.0);
+                std::clog << "Automatically corrected HoleCutDepth to 0" << std::endl;
+            }
+        }
+    }
+
     updateProps();
 }
 
